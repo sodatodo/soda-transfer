@@ -1,0 +1,62 @@
+{
+  "name": "soda-transfer",
+  "version": "1.0.0",
+  "description": "soda-transfer",
+  "main": "target/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "preinstall": "ELECTRON_MIRROR=\"https://cdn.npm.taobao.org/dist/electron/\"",
+    "start": "snowpack dev",
+    "app": "NODE_ENV=development electron .",
+    "release": "NODE_ENV=production electron-builder",
+    "dev": "tsc --build -v --pretty --watch --preserveWatchOutput",
+    "build": "snowpack build"
+  },
+  "build": {
+    "appId": "com.soda.soda-transfer",
+    "files": [
+      "public/**/*",
+      "package.json",
+      "main.js",
+      "node_modules/**/*"
+    ],
+    "publish": null
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sodatodo/electron-boilerplate.git"
+  },
+  "keywords": [
+    "electron"
+  ],
+  "author": "soda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sodatodo/electron-boilerplate/issues"
+  },
+  "homepage": "https://github.com/sodatodo/electron-boilerplate#readme",
+  "dependencies": {
+    "antd": "^4.9.2",
+    "electron": "^11.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1"
+  },
+  "devDependencies": {
+    "@snowpack/plugin-dotenv": "^2.0.5",
+    "@snowpack/plugin-react-refresh": "^2.3.8",
+    "@snowpack/plugin-typescript": "^1.1.1",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.9.1",
+    "@typescript-eslint/parser": "^4.9.1",
+    "electron-builder": "^22.9.1",
+    "eslint": "^7.15.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "snowpack": "^2.18.1",
+    "typescript": "^4.1.2"
+  }
+}

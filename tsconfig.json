@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "outDir": "./dist/tmp/root/",
+        "declarationDir": "./dist/tmp/rootdts/"
+    },
+    "include": [
+        "./lib/",
+        "./app/"
+    ],
+    "references": [
+        {
+            "path": "./app/tsconfig.json"
+        }
+    ]
+}
