@@ -1,16 +1,18 @@
 {
     "extends": "./tsconfig.base.json",
     "compilerOptions": {
-        "outDir": "./dist/tmp/root/",
-        "declarationDir": "./dist/tmp/rootdts/"
+      "outDir": "./dist/tmp/root/",
+      "skipLibCheck": true
     },
     "include": [
-        "./lib/",
-        "./app/"
+      "./app/",
+      "./lib/",
+      "./test/",
+      "./cli/"
     ],
-    "references": [
-        {
-            "path": "./app/tsconfig.json"
-        }
-    ]
-}
+    "exclude": [
+      "./node_modules/"
+    ],
+    "references": [],
+  }
+  

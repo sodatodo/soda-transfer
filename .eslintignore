@@ -1,3 +1,2 @@
-.eslintrc.js
-snowpack.config.js
-target/**/*
+target/
+dist/

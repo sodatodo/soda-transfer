@@ -1,6 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import electron from 'electron';
+
+function App() {
+  console.log('electron.ipcRenderer :>> ', electron.ipcRenderer);
+  electron.ipcRenderer.on('hello', (ev) => {
+    console.log('ev :>> ', ev);
+  });
+  return (
+    <div>Hello soda!</div>
+  );
+}
 
 ReactDOM.render(
   <React.StrictMode>

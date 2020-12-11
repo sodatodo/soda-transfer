@@ -16,6 +16,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module',
     project: './tsconfig.json',
+    createDefaultProgram: true,
   },
   plugins: [
     'react',
@@ -26,6 +27,8 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'no-use-before-define': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': 'error',
     '@typescript-eslint/no-use-before-define': ['error', { variables: false }],
     'react/jsx-filename-extension': [2, { extensions: ['.ts', '.tsx'] }],
     'import/extensions': ['error', 'ignorePackages', {
@@ -35,6 +38,7 @@ module.exports = {
       tsx: 'never',
       mjs: 'never',
     }],
+    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
   },
   settings: {
     'import/extensions': ['.ts', '.tsx'],
@@ -43,9 +47,9 @@ module.exports = {
     },
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'import/resolver': {
-      "node": {
-        "extensions": [".ts", ".tsx", ".native.js"]
-      }
+      node: {
+        extensions: ['.ts', '.tsx', '.native.js'],
+      },
     },
   },
 };
