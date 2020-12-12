@@ -1,6 +1,9 @@
 import * as path from 'path';
 import * as webpack from 'webpack';
 import Copy from 'copy-webpack-plugin';
+// const HtmlWebpackPlugin = require('html-webpack-plugin');
+// const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 // import TerserPlugin from 'terser-webpack-plugin';
 
 // const nodeEnv = process.env.NODE_ENV || 'development';
@@ -13,7 +16,7 @@ const config: webpack.Configuration[] = [
     mode: 'production',
     entry: './app/index.ts',
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'target'),
       filename: 'ignore_this.js',
     },
     module: {
@@ -31,23 +34,28 @@ const config: webpack.Configuration[] = [
           {
             from: './app/*.html',
             globOptions,
-            to: '.',
+            to: path.resolve(__dirname, 'target'),
           },
         ],
       }),
     ],
   },
   {
-    mode: 'production',
+    // mode: 'production',
+    mode: 'development',
     name: 'hyper',
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
     },
-    devtool: 'cheap-module-source-map',
+    // devtool: 'cheap-module-source-map',
+    devtool: 'inline-source-map',
     entry: './lib/index.tsx',
     output: {
       path: path.join(__dirname, 'target', 'renderer'),
       filename: 'bundle.js',
+    },
+    devServer: {
+      contentBase: path.join(__dirname, 'target', 'app'),
     },
     module: {
       rules: [
@@ -58,6 +66,9 @@ const config: webpack.Configuration[] = [
         },
       ],
     },
+    plugins: [
+      new CleanWebpackPlugin(),
+    ],
     target: 'electron-renderer',
   },
 ];

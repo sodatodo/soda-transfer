@@ -1,4 +1,5 @@
 const { app, BrowserWindow } = require('electron');
+// const path = require('path');
 
 function createWindow() {
   const win = new BrowserWindow({
@@ -9,7 +10,9 @@ function createWindow() {
     },
   });
 
-  win.loadFile('./target/renderer/index.html');
+  // const indexFile = path.resolve(__dirname, 'index.html');
+  // win.loadFile(indexFile);
+  win.loadURL('http://127.0.0.1:5500/target/app/index.html');
 }
 
 app.whenReady().then(createWindow);

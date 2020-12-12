@@ -8,7 +8,7 @@ function App() {
     console.log('ev :>> ', ev);
   });
   return (
-    <div>Hello soda!</div>
+    <div>Hello React! soda</div>
   );
 }
 
