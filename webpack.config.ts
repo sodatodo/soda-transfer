@@ -64,6 +64,42 @@ const config: webpack.Configuration[] = [
           exclude: /node_modules/,
           loader: 'babel-loader',
         },
+        {
+          test: /^(?!.*\.module\.less$).*\.less$/,
+          exclude: /node_modules/,
+          use: [{
+            loader: 'style-loader',
+          }, {
+            loader: 'css-loader',
+          }, {
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+            },
+          }],
+        },
+        {
+          test: /\.module.less$/,
+          exclude: /node_modules/,
+          use: [{
+            loader: 'style-loader',
+          }, {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: true,
+            },
+          }, {
+            loader: 'less-loader',
+            options: {
+              lessOptions: {
+                javascriptEnabled: true,
+              },
+            },
+          }],
+        },
       ],
     },
     plugins: [

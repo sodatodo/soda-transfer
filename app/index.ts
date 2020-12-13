@@ -12,7 +12,7 @@ function createWindow() {
 
   // const indexFile = path.resolve(__dirname, 'index.html');
   // win.loadFile(indexFile);
-  win.loadURL('http://127.0.0.1:5500/target/app/index.html');
+  win.loadURL('http://localhost:8080');
 }
 
 app.whenReady().then(createWindow);

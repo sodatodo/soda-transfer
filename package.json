@@ -7,7 +7,6 @@
     "postinstall": "electron-builder install-app-deps",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently -n \"Webpack,TypeScript\" -c \"cyan.bold,blue.bold\" \"webpack -w\" \"tsc --build -v --pretty --watch --preserveWatchOutput\" -k",
-    "build": "cross-env NODE_ENV=production TS_NODE_PROJECT=\"tsconfig.json\" webpack",
     "app": "electron .",
     "release-mac": "NODE_ENV=production electron-builder",
     "release-win": "NODE_ENV=production electron-builder --win --x64",
@@ -26,6 +25,7 @@
   "author": "soda",
   "license": "MIT",
   "devDependencies": {
+    "@ant-design/icons": "^4.3.0",
     "@babel/core": "^7.12.10",
     "@babel/plugin-proposal-numeric-separator": "^7.12.7",
     "@babel/plugin-proposal-optional-chaining": "^7.12.7",
@@ -46,6 +46,7 @@
     "concurrently": "^5.3.0",
     "copy-webpack-plugin": "^7.0.0",
     "cross-env": "^7.0.3",
+    "css-loader": "^5.0.1",
     "electron": "^11.0.4",
     "electron-builder": "^22.9.1",
     "eslint": "^7.15.0",
@@ -55,7 +56,10 @@
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-hooks": "^4.2.0",
     "html-webpack-plugin": "^4.5.0",
+    "less": "^3.12.2",
+    "less-loader": "^7.1.0",
     "null-loader": "^4.0.1",
+    "style-loader": "^2.0.0",
     "styled-jsx": "^3.3.2",
     "terser-webpack-plugin": "^5.0.3",
     "ts-node": "^9.1.1",
@@ -66,6 +70,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "antd": "^4.9.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   }
