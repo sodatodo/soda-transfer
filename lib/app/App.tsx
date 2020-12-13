@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Layout } from 'antd';
-// import { AppleFilled } from '@ant-design/icons';
+import electron from 'electron';
 import { ConnectContainer } from '../containers';
 import style from './style.module.less';
 
@@ -9,6 +9,11 @@ function App() {
   // electron.ipcRenderer.on('hello', (ev) => {
   //   console.log('ev :>> ', ev);
   // });
+  useEffect(() => {
+    electron.ipcRenderer.on('init', (event, args) => {
+      console.log('event, args :>> ', event, args);
+    });
+  }, []);
   return (
     <Layout className={style.appcontainer}>
       <ConnectContainer />

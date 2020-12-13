@@ -1,5 +1,6 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import createRPC from '../rpc';
+import { getIpAddressArray } from '../utils/network';
 
 export function newWindow(
   options_: BrowserWindowConstructorOptions,
@@ -9,6 +10,8 @@ export function newWindow(
   console.log('options_ :>> ', options_);
   console.log('cfg :>> ', cfg);
   console.log('fn :>> ', fn);
+  const ipArray = getIpAddressArray();
+  console.log('ipArray :>> ', ipArray);
   const window = new BrowserWindow({
     width: 800,
     height: 600,
