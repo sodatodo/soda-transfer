@@ -1,10 +1,17 @@
 import { app, BrowserWindow } from 'electron';
+import installExtension, { REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 // import isDev from 'electron-is-dev';
 import { newWindow } from './ui/window';
 
 const windowSet = new Set<BrowserWindow>([]);
 
 app.on('ready', () => {
+  installExtension(REDUX_DEVTOOLS)
+    .then((name: any) => console.log(`Added Extension:  ${name}`))
+    .catch((err: any) => console.log('An error occurred: ', err));
+  installExtension(REACT_DEVELOPER_TOOLS)
+    .then((name: any) => console.log(`Added Extension:  ${name}`))
+    .catch((err: any) => console.log('An error occurred: ', err));
   function createWindow(fn?: (win: BrowserWindow) => void, options: Record<string, any> = {}) {
     // 获取窗口大小
     const [width, height] = [800, 600];

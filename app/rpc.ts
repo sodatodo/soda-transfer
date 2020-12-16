@@ -36,6 +36,12 @@ export class Server extends EventEmitter {
   ipcListener(event: any, { ev, data }: {ev: string; data: any}) {
     super.emit(ev, data);
   }
+
+  emit(ch: string, data: any = {}): any {
+    if (!this.win.isDestroyed()) {
+      this.wc.send(this.id, { ch, data });
+    }
+  }
 }
 
 export default (win: BrowserWindow) => new Server(win);
