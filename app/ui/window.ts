@@ -3,7 +3,7 @@ import createRPC from '../rpc';
 import { createBufferReadLine } from '../utils/bufferreader';
 import { getARPData, getNetworkInterfaceInfoList, parseArpLine } from '../utils/network';
 import serverState from '../ws/serverState';
-import { getRemoteServerState } from '../ws/WebSocketClient';
+import { getRemoteServerState, swapOffer } from '../ws/WebSocketClient';
 
 export function newWindow(
   options_: BrowserWindowConstructorOptions,
@@ -63,6 +63,11 @@ export function newWindow(
       rpc.emit('get-remote-server-state', newState);
     });
     getRemoteServerState();
+  });
+
+  rpc.on('swap-offer-desc', (offerDesc: any) => {
+    // console.log('offerDesc :>> ', offerDesc);
+    swapOffer(offerDesc);
   });
 
   return window;

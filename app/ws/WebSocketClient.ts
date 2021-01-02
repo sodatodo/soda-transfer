@@ -12,4 +12,13 @@ export const getRemoteServerState = () => {
     type: 'get-remote-server-state',
   }));
 };
+
+export const swapOffer = (desc: any) => {
+  wss.send(JSON.stringify({
+    type: 'swap-offer-desc',
+    targetId: desc.id,
+    desc: desc.desc,
+  }));
+};
+
 export default {};

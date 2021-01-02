@@ -1,19 +1,31 @@
-import React, { useEffect } from 'react';
-import { Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Button, List, Typography } from 'antd';
 import rpc from '../../utils/rpc';
+import { WebRTCDataChannelClient } from '../../webrtc';
 
 function ConnectContainer() {
+  const [clients, setClients] = useState([]);
+  const [localOfferDescription, setLocalOfferDescription] = useState({});
   useEffect(() => {
-    rpc.on('get-local-network-info', (data) => {
+    rpc.on('get-local-network-info', (data: any) => {
       console.log('data :>> ', data);
     });
     rpc.on('get-remote-server-state', (result) => {
       console.log('result :>> ', result);
+      // const currentClients = result.map((item: any) => item.remoteAddress);
+      setClients(result);
     });
     rpc.on('get-arp-info', (arpInfoSet) => {
       if (arpInfoSet instanceof Set) {
         console.log('sodalog Array.from(arpInfoSet) :>> ', Array.from(arpInfoSet));
       }
+    });
+
+    const dataChannelClient = new WebRTCDataChannelClient();
+    dataChannelClient.createDataChannel();
+    dataChannelClient.createOffer((desc: RTCSessionDescriptionInit) => {
+      console.log('desc :>> ', desc);
+      setLocalOfferDescription(desc);
     });
   }, []);
   const handleSend = () => {
@@ -25,12 +37,37 @@ function ConnectContainer() {
   const handleGetServerState = () => {
     rpc.emit('get-remote-server-state', null);
   };
+  const handleSendLocalOfferDesc = (item: any) => {
+    console.log('item :>> ', item);
+    console.log('localOfferDescription :>> ', localOfferDescription);
+    rpc.emit('swap-offer-desc', {
+      type: 'caller',
+      id: item.id,
+      desc: JSON.stringify(localOfferDescription),
+    });
+  };
   return (
     <div>
       ConnectContainer
       <Button onClick={handleSend}>get local network info</Button>
       <Button onClick={handleGetArp}>get arp info</Button>
       <Button onClick={handleGetServerState}>get remove info</Button>
+
+      <List
+        // header={<div>Header</div>}
+        // footer={<div>Footer</div>}
+        bordered
+        dataSource={clients}
+        renderItem={(item: any) => (
+          <List.Item onClick={() => handleSendLocalOfferDesc(item)}>
+            <Typography.Text mark>[ITEM]</Typography.Text>
+            {' '}
+            {item.remoteAddress}
+          </List.Item>
+        )}
+      />
+
+      <textarea />
     </div>
   );
 }
