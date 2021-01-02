@@ -1,7 +1,15 @@
 import WebSocket from 'ws';
 import { openListener, messageListener } from './listeners';
 
-const wss = new WebSocket('wss://192.168.0.119:8080');
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+export const wss = new WebSocket('wss://192.168.0.119:3006');
 
 wss.on('open', openListener);
 wss.on('message', messageListener);
+
+export const getRemoteServerState = () => {
+  wss.send(JSON.stringify({
+    type: 'get-remote-server-state',
+  }));
+};
+export default {};

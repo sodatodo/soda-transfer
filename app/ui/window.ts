@@ -2,6 +2,8 @@ import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import createRPC from '../rpc';
 import { createBufferReadLine } from '../utils/bufferreader';
 import { getARPData, getNetworkInterfaceInfoList, parseArpLine } from '../utils/network';
+import serverState from '../ws/serverState';
+import { getRemoteServerState } from '../ws/WebSocketClient';
 
 export function newWindow(
   options_: BrowserWindowConstructorOptions,
@@ -54,6 +56,13 @@ export function newWindow(
         }
       });
     }
+  });
+
+  rpc.on('get-remote-server-state', () => {
+    serverState.setServerStateListener((newState: any) => {
+      rpc.emit('get-remote-server-state', newState);
+    });
+    getRemoteServerState();
   });
 
   return window;

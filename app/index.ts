@@ -3,6 +3,8 @@ import installExtension, { REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS } from 'electro
 // import isDev from 'electron-is-dev';
 import { newWindow } from './ui/window';
 
+import('./ws/WebSocketClient');
+
 const windowSet = new Set<BrowserWindow>([]);
 
 app.on('ready', () => {
