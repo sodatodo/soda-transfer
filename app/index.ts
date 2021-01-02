@@ -2,6 +2,7 @@ import { app, BrowserWindow } from 'electron';
 import installExtension, { REDUX_DEVTOOLS, REACT_DEVELOPER_TOOLS } from 'electron-devtools-installer';
 // import isDev from 'electron-is-dev';
 import { newWindow } from './ui/window';
+import webrtcState from './ws/states/webrtcState';
 
 import('./ws/WebSocketClient');
 

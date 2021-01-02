@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 // import { wss } from './WebSocketClient';
 
 interface serverStateItem {
@@ -10,18 +11,25 @@ class ServerState {
 
     callback: any;
 
+    emitter: EventEmitter;
+
+    constructor() {
+      this.emitter = new EventEmitter();
+    }
+
     getServerState = () => this.state;
 
     setServerState = (newState: serverStateItem[]) => {
-      console.log('设置 state ', newState);
+      // console.log('设置 state ', newState);
       this.state = newState;
-      if (this.callback) {
-        this.callback(newState);
-      }
+      // if (this.callback) {
+      //   this.callback(newState);
+      // }
+      this.emitter.emit('on-get-server-state', newState);
     }
 
-    setServerStateListener = (callback: any) => {
-      this.callback = callback;
+    onGetServerState = (listener: any) => {
+      this.emitter.on('on-get-server-state', listener);
     }
 }
 

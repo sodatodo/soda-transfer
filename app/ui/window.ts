@@ -60,18 +60,27 @@ export function newWindow(
   });
 
   rpc.on('get-remote-server-state', () => {
-    serverState.setServerStateListener((newState: any) => {
-      rpc.emit('get-remote-server-state', newState);
-    });
+    // serverState.setServerStateListener((newState: any) => {
+    //   rpc.emit('get-remote-server-state', newState);
+    // });
     getRemoteServerState();
   });
 
   rpc.on('swap-offer-desc', (offerDesc: any) => {
     // console.log('offerDesc :>> ', offerDesc);
-    webrtcState.setRemoteWebRTCDescriptionListener((description) => {
-      rpc.emit('on-get-remote-offer-desc', description);
-    });
+    // webrtcState.setRemoteWebRTCDescriptionListener((description) => {
+    //   rpc.emit('on-get-remote-offer-desc', description);
+    // });
     swapOffer(offerDesc);
+  });
+
+  serverState.onGetServerState((newState: any) => {
+    rpc.emit('get-remote-server-state', newState);
+  });
+
+  webrtcState.onGetRemoteDesc((desc: any) => {
+    // console.log('desc indes :>> ', desc);
+    rpc.emit('on-get-remote-offer-desc', desc);
   });
 
   return window;

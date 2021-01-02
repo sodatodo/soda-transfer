@@ -1,22 +1,22 @@
-interface WebRTCDescriptionListener {
-    (description: any): void
-}
+import { EventEmitter } from 'events';
+
 class WebRTCState {
     remoteWebRTCDescription: any;
 
-    onGetRemoteWebRTCDescription: WebRTCDescriptionListener = (desc) => {
-      console.log('desc :>> ', desc);
-    }
+    emitter: EventEmitter;
 
-    setRemoteWebRTCDescriptionListener = (listener: WebRTCDescriptionListener) => {
-      this.onGetRemoteWebRTCDescription = listener;
+    constructor() {
+      this.emitter = new EventEmitter();
     }
 
     setRemoteWebRTCDescription = (desc: any) => {
       this.remoteWebRTCDescription = desc;
-      if (this.onGetRemoteWebRTCDescription) {
-        this.onGetRemoteWebRTCDescription(desc);
-      }
+
+      this.emitter.emit('on-get-remote-desc', desc);
+    }
+
+    onGetRemoteDesc = (listener: any) => {
+      this.emitter.on('on-get-remote-desc', listener);
     }
 }
 
