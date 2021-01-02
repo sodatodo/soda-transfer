@@ -20,6 +20,9 @@ function ConnectContainer() {
         console.log('sodalog Array.from(arpInfoSet) :>> ', Array.from(arpInfoSet));
       }
     });
+    rpc.on('on-get-remote-offer-desc', (desc) => {
+      console.log('on-get-remote-offer-desc desc :>> ', desc);
+    });
 
     const dataChannelClient = new WebRTCDataChannelClient();
     dataChannelClient.createDataChannel();

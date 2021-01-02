@@ -2,7 +2,8 @@ import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import createRPC from '../rpc';
 import { createBufferReadLine } from '../utils/bufferreader';
 import { getARPData, getNetworkInterfaceInfoList, parseArpLine } from '../utils/network';
-import serverState from '../ws/serverState';
+import serverState from '../ws/states/serverState';
+import webrtcState from '../ws/states/webrtcState';
 import { getRemoteServerState, swapOffer } from '../ws/WebSocketClient';
 
 export function newWindow(
@@ -67,6 +68,9 @@ export function newWindow(
 
   rpc.on('swap-offer-desc', (offerDesc: any) => {
     // console.log('offerDesc :>> ', offerDesc);
+    webrtcState.setRemoteWebRTCDescriptionListener((description) => {
+      rpc.emit('on-get-remote-offer-desc', description);
+    });
     swapOffer(offerDesc);
   });
 
