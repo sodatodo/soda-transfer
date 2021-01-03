@@ -23,6 +23,7 @@ class WebRTCDataChannelClient extends WebRTCClient {
       if (this.onGotDescription) {
         this.onGotDescription(desc);
       }
+      this.peerConnection.setLocalDescription(desc);
     }
 
     handleGotDescriptionError = (error: Error) => {
@@ -35,7 +36,7 @@ class WebRTCDataChannelClient extends WebRTCClient {
       this.peerConnection.setRemoteDescription(description);
       // super.setRemoteDescription(description);
       const rtcSessionDescription = await this.peerConnection.createAnswer();
-      this.peerConnection.setLocalDescription(rtcSessionDescription);
+      // this.peerConnection.setLocalDescription(rtcSessionDescription);
       return rtcSessionDescription;
     }
 }

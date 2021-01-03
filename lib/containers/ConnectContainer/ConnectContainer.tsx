@@ -23,16 +23,21 @@ function ConnectContainer() {
     const dataChannelClient = new WebRTCDataChannelClient();
     rpc.on('on-get-remote-offer-desc', async (message) => {
       console.log('on-get-remote-offer-desc message :>> ', message);
-      const { desc } = message;
-      console.log('message :>> ', message);
-      const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
-        JSON.parse(desc),
-      );
-      rpc.emit('swap-offer-desc', {
-        type: 'callee',
-        id: message.fromId,
-        desc: JSON.stringify(answerDescription),
-      });
+      const { desc, clientType } = message;
+      // console.log('message :>> ', message);
+      if (clientType === 'caller') {
+        const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
+          JSON.parse(desc),
+        );
+        rpc.emit('swap-offer-desc', {
+          type: 'callee',
+          id: message.fromId,
+          desc: JSON.stringify(answerDescription),
+        });
+      } else if (clientType === 'callee') {
+        // console.log('from callee desc :>> ', desc);
+        dataChannelClient.setRemoteDescription(JSON.parse(desc));
+      }
       // answer.then(
       //   (answerdesc: RTCSessionDescriptionInit) => {
       //     console.log('answerdesc :>> ', answerdesc);
