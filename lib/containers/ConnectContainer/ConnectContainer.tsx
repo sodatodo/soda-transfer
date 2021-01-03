@@ -24,11 +24,15 @@ function ConnectContainer() {
     rpc.on('on-get-remote-offer-desc', async (message) => {
       console.log('on-get-remote-offer-desc message :>> ', message);
       const { desc } = message;
-      const answerDescription = dataChannelClient.setRemoteDescriptionAndCreateAnswer(
+      console.log('message :>> ', message);
+      const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
         JSON.parse(desc),
       );
-      console.log('answerDescription :>> ', answerDescription);
-      // rpc.emit('swap-answer-offer-desc', )
+      rpc.emit('swap-offer-desc', {
+        type: 'callee',
+        id: message.fromId,
+        desc: JSON.stringify(answerDescription),
+      });
       // answer.then(
       //   (answerdesc: RTCSessionDescriptionInit) => {
       //     console.log('answerdesc :>> ', answerdesc);

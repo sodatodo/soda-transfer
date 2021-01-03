@@ -35,6 +35,7 @@ class WebRTCDataChannelClient extends WebRTCClient {
       this.peerConnection.setRemoteDescription(description);
       // super.setRemoteDescription(description);
       const rtcSessionDescription = await this.peerConnection.createAnswer();
+      this.peerConnection.setLocalDescription(rtcSessionDescription);
       return rtcSessionDescription;
     }
 }

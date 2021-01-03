@@ -74,6 +74,10 @@ export function newWindow(
     swapOffer(offerDesc);
   });
 
+  // rpc.on('swap-answer-offer-desc', (answerOfferDesc: any) => {
+  //   swapOffer(answerOfferDesc);
+  // });
+
   serverState.onGetServerState((newState: any) => {
     rpc.emit('get-remote-server-state', newState);
   });

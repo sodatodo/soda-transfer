@@ -14,8 +14,10 @@ export const getRemoteServerState = () => {
 };
 
 export const swapOffer = (desc: any) => {
+  // console.log('desc :>> ', desc);
   wss.send(JSON.stringify({
     type: 'swap-offer-desc',
+    clientType: desc.type,
     targetId: desc.id,
     desc: desc.desc,
   }));
