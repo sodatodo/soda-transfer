@@ -20,11 +20,25 @@ function ConnectContainer() {
         console.log('sodalog Array.from(arpInfoSet) :>> ', Array.from(arpInfoSet));
       }
     });
-    rpc.on('on-get-remote-offer-desc', (desc) => {
-      console.log('on-get-remote-offer-desc desc :>> ', desc);
+    const dataChannelClient = new WebRTCDataChannelClient();
+    rpc.on('on-get-remote-offer-desc', async (message) => {
+      console.log('on-get-remote-offer-desc message :>> ', message);
+      const { desc } = message;
+      const answerDescription = dataChannelClient.setRemoteDescriptionAndCreateAnswer(
+        JSON.parse(desc),
+      );
+      console.log('answerDescription :>> ', answerDescription);
+      // rpc.emit('swap-answer-offer-desc', )
+      // answer.then(
+      //   (answerdesc: RTCSessionDescriptionInit) => {
+      //     console.log('answerdesc :>> ', answerdesc);
+      //   },
+      //   (error) => {
+      //     console.log('error :>> ', error);
+      //   },
+      // );
     });
 
-    const dataChannelClient = new WebRTCDataChannelClient();
     dataChannelClient.createDataChannel();
     dataChannelClient.createOffer((desc: RTCSessionDescriptionInit) => {
       console.log('desc :>> ', desc);

@@ -9,10 +9,11 @@ class WebRTCState {
       this.emitter = new EventEmitter();
     }
 
-    setRemoteWebRTCDescription = (desc: any) => {
-      this.remoteWebRTCDescription = desc;
+    setRemoteWebRTCDescription = (message: any) => {
+      // console.log('message :>> ', message);
+      this.remoteWebRTCDescription = message;
 
-      this.emitter.emit('on-get-remote-desc', desc);
+      this.emitter.emit('on-get-remote-desc', this.remoteWebRTCDescription);
     }
 
     onGetRemoteDesc = (listener: any) => {

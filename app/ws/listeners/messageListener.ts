@@ -18,7 +18,7 @@ const messageListener = (data: Data) => {
         serverState.setServerState(message.state);
         break;
       case 'swap-offer-desc':
-        webrtcState.setRemoteWebRTCDescription(message.desc);
+        webrtcState.setRemoteWebRTCDescription(message);
         break;
       default:
         break;

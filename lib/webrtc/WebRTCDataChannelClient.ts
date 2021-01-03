@@ -28,6 +28,15 @@ class WebRTCDataChannelClient extends WebRTCClient {
     handleGotDescriptionError = (error: Error) => {
       console.log('error :>> ', error);
     }
+
+    setRemoteDescriptionAndCreateAnswer = async (
+      description: RTCSessionDescriptionInit,
+    ) => {
+      this.peerConnection.setRemoteDescription(description);
+      // super.setRemoteDescription(description);
+      const rtcSessionDescription = await this.peerConnection.createAnswer();
+      return rtcSessionDescription;
+    }
 }
 
 export default WebRTCDataChannelClient;
