@@ -7,8 +7,13 @@ interface gotRTCSessionDescriptionListener {
 class WebRTCDataChannelClient extends WebRTCClient {
     onGotDescription: gotRTCSessionDescriptionListener | undefined;
 
+    dataChannel: RTCDataChannel | undefined;
+
     createDataChannel = () => {
-      this.peerConnection.createDataChannel('sendDataChannel');
+      this.dataChannel = this.peerConnection.createDataChannel('sendDataChannel');
+      this.dataChannel.onopen = () => {
+        console.log('data channel open');
+      };
     }
 
     createOffer = (onGotDescription?: gotRTCSessionDescriptionListener) => {
@@ -23,11 +28,14 @@ class WebRTCDataChannelClient extends WebRTCClient {
       if (this.onGotDescription) {
         this.onGotDescription(desc);
       }
-      this.peerConnection.setLocalDescription(desc);
     }
 
     handleGotDescriptionError = (error: Error) => {
       console.log('error :>> ', error);
+    }
+
+    setLocalDescription = (description: RTCSessionDescriptionInit) => {
+      this.peerConnection.setLocalDescription(description);
     }
 
     setRemoteDescriptionAndCreateAnswer = async (
