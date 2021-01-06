@@ -1,0 +1,4 @@
+export const SAVE_LOCAL_DESCRIPTION = 'store/webrtc/SAVE_LOCAL_DESCRIPTION';
+export const SAVE_REMOTE_DESCRIPTION = 'store/webrtc/SAVE_REMOTE_DESCRIPTION';
+export const SAVE_ANSWER_DESCRIPTION = 'store/webrtc/SAVE_ANSWER_DESCRIPTION';
+export const SET_CLIENT_TYPE = 'store/webrtc/SET_CLIENT_TYPE';

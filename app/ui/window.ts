@@ -4,7 +4,7 @@ import { createBufferReadLine } from '../utils/bufferreader';
 import { getARPData, getNetworkInterfaceInfoList, parseArpLine } from '../utils/network';
 import serverState from '../ws/states/serverState';
 import webrtcState from '../ws/states/webrtcState';
-import { getRemoteServerState, swapOffer } from '../ws/WebSocketClient';
+import { getRemoteServerState, sendWebSocketMessage, WebSocketMessage } from '../ws/WebSocketClient';
 
 export function newWindow(
   options_: BrowserWindowConstructorOptions,
@@ -66,12 +66,8 @@ export function newWindow(
     getRemoteServerState();
   });
 
-  rpc.on('swap-offer-desc', (offerDesc: any) => {
-    // console.log('offerDesc :>> ', offerDesc);
-    // webrtcState.setRemoteWebRTCDescriptionListener((description) => {
-    //   rpc.emit('on-get-remote-offer-desc', description);
-    // });
-    swapOffer(offerDesc);
+  rpc.on('websocket-message', (offerDesc: WebSocketMessage) => {
+    sendWebSocketMessage(offerDesc);
   });
 
   // rpc.on('swap-answer-offer-desc', (answerOfferDesc: any) => {

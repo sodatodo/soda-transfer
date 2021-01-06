@@ -24,6 +24,7 @@ class Client {
           this.id = uid;
           this.ipc.on(uid, this.ipcListener);
           this.emitter.emit('ready');
+          console.log('this.id :>> ', this.id);
         });
       }
     }

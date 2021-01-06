@@ -39,6 +39,7 @@ module.exports = {
       mjs: 'never',
     }],
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/prefer-default-export': 'off',
   },
   settings: {
     'import/extensions': ['.ts', '.tsx'],

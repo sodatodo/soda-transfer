@@ -1,11 +1,28 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable no-underscore-dangle */
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, List, Typography } from 'antd';
 import rpc from '../../utils/rpc';
 import { WebRTCDataChannelClient } from '../../webrtc';
 
-function ConnectContainer() {
+function ConnectContainer({
+  onSetLocalDescription,
+  onGetRemoteDescription,
+  onGetAnswerDescription,
+  onSetClientType,
+  clientType: currentClientType,
+}: {
+  onSetLocalDescription: any,
+  onGetRemoteDescription: any,
+  onGetAnswerDescription: any,
+  onSetClientType: any,
+  clientType: string,
+}) {
   const [clients, setClients] = useState([]);
   const [localOfferDescription, setLocalOfferDescription] = useState({});
+  const refClientType = useRef(currentClientType);
+  useEffect(() => {
+    refClientType.current = currentClientType;
+  }, [currentClientType]);
   useEffect(() => {
     rpc.on('get-local-network-info', (data: any) => {
       console.log('data :>> ', data);
@@ -22,21 +39,34 @@ function ConnectContainer() {
     });
     const dataChannelClient = new WebRTCDataChannelClient();
     rpc.on('on-get-remote-offer-desc', async (message) => {
-      console.log('on-get-remote-offer-desc message :>> ', message);
-      const { desc, clientType } = message;
+      const { desc, clientType, fromId } = message;
+      if (clientType === 'caller' && refClientType.current === 'caller') {
+        console.log('caller客户端应获取来自 callee客户端的 description ');
+        return;
+      }
       // console.log('message :>> ', message);
       if (clientType === 'caller') {
+        onGetRemoteDescription(desc);
         const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
-          JSON.parse(desc),
+          desc,
         );
-        rpc.emit('swap-offer-desc', {
-          type: 'callee',
-          id: message.fromId,
-          desc: JSON.stringify(answerDescription),
+        onGetAnswerDescription(answerDescription);
+        rpc.emit('websocket-message', {
+          type: 'swap-offer-desc',
+          clientType: 'callee',
+          targetId: fromId,
+          data: {
+            description: JSON.stringify(answerDescription),
+          },
         });
+        // rpc.emit('swap-offer-desc', {
+        //   type: 'callee',
+        //   id: message.fromId,
+        //   desc: JSON.stringify(answerDescription),
+        // });
       } else if (clientType === 'callee') {
         // console.log('from callee desc :>> ', desc);
-        dataChannelClient.setRemoteDescription(JSON.parse(desc));
+        dataChannelClient.setRemoteDescription(desc);
       }
       // answer.then(
       //   (answerdesc: RTCSessionDescriptionInit) => {
@@ -64,12 +94,15 @@ function ConnectContainer() {
     rpc.emit('get-remote-server-state', null);
   };
   const handleSendLocalOfferDesc = (item: any) => {
-    console.log('item :>> ', item);
-    console.log('localOfferDescription :>> ', localOfferDescription);
-    rpc.emit('swap-offer-desc', {
-      type: 'caller',
-      id: item.id,
-      desc: JSON.stringify(localOfferDescription),
+    onSetLocalDescription(localOfferDescription);
+    onSetClientType('caller');
+    rpc.emit('websocket-message', {
+      type: 'swap-offer-desc',
+      clientType: 'caller',
+      targetId: item.id,
+      data: {
+        description: JSON.stringify(localOfferDescription),
+      },
     });
   };
   return (
