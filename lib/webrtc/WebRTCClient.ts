@@ -21,6 +21,7 @@ class WebRTCClient {
     }
 
     handleIceCandidate = (ev: RTCPeerConnectionIceEvent) => {
+      console.log('sodalog handle icecandidate');
       if (this.onIceCandidate) {
         this.onIceCandidate(ev);
       }

@@ -68,22 +68,21 @@ function ConnectContainer({
         // console.log('from callee desc :>> ', desc);
         dataChannelClient.setRemoteDescription(desc);
       }
-      // answer.then(
-      //   (answerdesc: RTCSessionDescriptionInit) => {
-      //     console.log('answerdesc :>> ', answerdesc);
-      //   },
-      //   (error) => {
-      //     console.log('error :>> ', error);
-      //   },
-      // );
     });
 
     dataChannelClient.createDataChannel();
+    dataChannelClient.setIceCandidateListener((ev: RTCPeerConnectionIceEvent) => {
+      // console.log('sodalog ev.candidate :>> ', ev.candidate);
+      if (ev.candidate) {
+        console.log('ev.candidate :>> ', ev.candidate);
+      }
+    });
     dataChannelClient.createOffer((desc: RTCSessionDescriptionInit) => {
-      console.log('desc :>> ', desc);
       setLocalOfferDescription(desc);
+      dataChannelClient.setLocalDescription(desc);
     });
   }, []);
+
   const handleSend = () => {
     rpc.emit('get-local-network-info', null);
   };
