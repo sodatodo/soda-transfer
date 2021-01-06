@@ -18,7 +18,6 @@ function ConnectContainer({
   clientType: string,
 }) {
   const [clients, setClients] = useState([]);
-  const [localOfferDescription, setLocalOfferDescription] = useState({});
   const refClientType = useRef(currentClientType);
   useEffect(() => {
     refClientType.current = currentClientType;
@@ -43,18 +42,12 @@ function ConnectContainer({
     rpc.on('on-get-remote-offer-desc', async (message) => {
       console.log('message :>> ', message);
       const { desc, clientType, fromId } = message;
-      if (clientType === 'caller' && refClientType.current === 'caller') {
-        console.log('caller客户端应获取来自 callee客户端的 description ');
-        return;
-      }
-      console.log('message :>> ', message);
       if (clientType === 'caller') {
         onSetClientType('callee');
         onGetRemoteDescription(desc);
         const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
           desc,
         );
-        onGetAnswerDescription(answerDescription);
         rpc.emit('websocket-message', {
           type: 'swap-offer-desc',
           clientType: 'callee',
@@ -63,12 +56,8 @@ function ConnectContainer({
             description: JSON.stringify(answerDescription),
           },
         });
-        // rpc.emit('swap-offer-desc', {
-        //   type: 'callee',
-        //   id: message.fromId,
-        //   desc: JSON.stringify(answerDescription),
-        // });
-      } else if (clientType === 'callee') {
+      }
+      if (clientType === 'callee') {
         // console.log('from callee desc :>> ', desc);
         onGetRemoteDescription(desc);
         dataChannelClient.setRemoteDescription(desc);
@@ -95,7 +84,6 @@ function ConnectContainer({
   };
   const handleSendLocalOfferDesc = (item: any) => {
     dataChannelClient.createOffer((desc: RTCSessionDescriptionInit) => {
-      setLocalOfferDescription(desc);
       dataChannelClient.setLocalDescription(desc);
       onSetLocalDescription(desc);
       onSetClientType('caller');
