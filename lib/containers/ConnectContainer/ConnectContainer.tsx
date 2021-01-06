@@ -69,7 +69,7 @@ function ConnectContainer({
       }
     });
 
-    dataChannelClient.createDataChannel();
+    // dataChannelClient.createDataChannel();
     dataChannelClient.setIceCandidateListener((ev: RTCPeerConnectionIceEvent) => {
       // console.log('sodalog ev.candidate :>> ', ev.candidate);
       if (ev.candidate) {
