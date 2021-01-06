@@ -23,6 +23,9 @@ function ConnectContainer({
   useEffect(() => {
     refClientType.current = currentClientType;
   }, [currentClientType]);
+
+  const dataChannelClient = new WebRTCDataChannelClient();
+
   useEffect(() => {
     rpc.on('get-local-network-info', (data: any) => {
       console.log('data :>> ', data);
@@ -37,8 +40,8 @@ function ConnectContainer({
         console.log('sodalog Array.from(arpInfoSet) :>> ', Array.from(arpInfoSet));
       }
     });
-    const dataChannelClient = new WebRTCDataChannelClient();
     rpc.on('on-get-remote-offer-desc', async (message) => {
+      console.log('message :>> ', message);
       const { desc, clientType, fromId } = message;
       if (clientType === 'caller' && refClientType.current === 'caller') {
         console.log('caller客户端应获取来自 callee客户端的 description ');
@@ -79,10 +82,6 @@ function ConnectContainer({
         console.log('ev.candidate :>> ', ev.candidate);
       }
     });
-    dataChannelClient.createOffer((desc: RTCSessionDescriptionInit) => {
-      setLocalOfferDescription(desc);
-      dataChannelClient.setLocalDescription(desc);
-    });
   }, []);
 
   const handleSend = () => {
@@ -95,15 +94,19 @@ function ConnectContainer({
     rpc.emit('get-remote-server-state', null);
   };
   const handleSendLocalOfferDesc = (item: any) => {
-    onSetLocalDescription(localOfferDescription);
-    onSetClientType('caller');
-    rpc.emit('websocket-message', {
-      type: 'swap-offer-desc',
-      clientType: 'caller',
-      targetId: item.id,
-      data: {
-        description: JSON.stringify(localOfferDescription),
-      },
+    dataChannelClient.createOffer((desc: RTCSessionDescriptionInit) => {
+      setLocalOfferDescription(desc);
+      dataChannelClient.setLocalDescription(desc);
+      onSetLocalDescription(desc);
+      onSetClientType('caller');
+      rpc.emit('websocket-message', {
+        type: 'swap-offer-desc',
+        clientType: 'caller',
+        targetId: item.id,
+        data: {
+          description: JSON.stringify(desc),
+        },
+      });
     });
   };
   return (
