@@ -48,6 +48,9 @@ function ConnectContainer({
         const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
           desc,
         );
+        dataChannelClient.setLocalDescription(answerDescription);
+        onSetLocalDescription(answerDescription);
+
         rpc.emit('websocket-message', {
           type: 'swap-offer-desc',
           clientType: 'callee',
