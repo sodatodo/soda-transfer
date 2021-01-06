@@ -42,10 +42,6 @@ class WebRTCClient {
     //   return this.peerConnection.createOffer(...args);
     // }
 
-    setRemoteDescription = (
-      description: RTCSessionDescriptionInit,
-    ) => this.peerConnection.setRemoteDescription(description);
-
     isEnvSupport = () => !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
 }
 

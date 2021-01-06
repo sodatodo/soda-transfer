@@ -35,16 +35,20 @@ class WebRTCDataChannelClient extends WebRTCClient {
     }
 
     setLocalDescription = (description: RTCSessionDescriptionInit) => {
+      console.log('set local desc', description);
       this.peerConnection.setLocalDescription(description);
+    }
+
+    setRemoteDescription = (description: RTCSessionDescriptionInit) => {
+      console.log('set remote desc', description);
+      this.peerConnection.setRemoteDescription(description);
     }
 
     setRemoteDescriptionAndCreateAnswer = async (
       description: RTCSessionDescriptionInit,
     ) => {
       this.peerConnection.setRemoteDescription(description);
-      // super.setRemoteDescription(description);
       const rtcSessionDescription = await this.peerConnection.createAnswer();
-      // this.peerConnection.setLocalDescription(rtcSessionDescription);
       return rtcSessionDescription;
     }
 }
