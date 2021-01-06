@@ -43,6 +43,7 @@ function ConnectContainer({
       console.log('message :>> ', message);
       const { desc, clientType, fromId } = message;
       if (clientType === 'caller') {
+        console.log('被叫端');
         onSetClientType('callee');
         onGetRemoteDescription(desc);
         const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
@@ -61,6 +62,7 @@ function ConnectContainer({
         });
       }
       if (clientType === 'callee') {
+        console.log('主叫端');
         // console.log('from callee desc :>> ', desc);
         onGetRemoteDescription(desc);
         dataChannelClient.setRemoteDescription(desc);
