@@ -44,8 +44,9 @@ function ConnectContainer({
         console.log('caller客户端应获取来自 callee客户端的 description ');
         return;
       }
-      // console.log('message :>> ', message);
+      console.log('message :>> ', message);
       if (clientType === 'caller') {
+        onSetClientType('callee');
         onGetRemoteDescription(desc);
         const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
           desc,
@@ -66,6 +67,7 @@ function ConnectContainer({
         // });
       } else if (clientType === 'callee') {
         // console.log('from callee desc :>> ', desc);
+        onGetRemoteDescription(desc);
         dataChannelClient.setRemoteDescription(desc);
       }
     });
