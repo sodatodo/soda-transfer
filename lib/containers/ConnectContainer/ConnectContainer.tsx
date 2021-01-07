@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, List, Typography } from 'antd';
 import rpc from '../../utils/rpc';
 import { WebRTCDataChannelClient } from '../../webrtc';
+import MessageListener from '../MessageListener';
 
 function ConnectContainer({
   onSetLocalDescription,
@@ -112,6 +113,7 @@ function ConnectContainer({
       <Button onClick={handleGetArp}>get arp info</Button>
       <Button onClick={handleGetServerState}>get remove info</Button>
       <Button onClick={() => createOffer('fffffffoooooo')}>create offer</Button>
+      <MessageListener />
 
       <List
         // header={<div>Header</div>}
