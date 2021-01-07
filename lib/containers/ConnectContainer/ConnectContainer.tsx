@@ -6,17 +6,17 @@ import { WebRTCDataChannelClient } from '../../webrtc';
 import MessageListener from '../MessageListener';
 
 function ConnectContainer({
-  onSetLocalDescription,
+  // onSetLocalDescription,
   // onGetRemoteDescription,
   // onGetAnswerDescription,
-  onSetClientType,
+  // onSetClientType,
   clientType: currentClientType,
   createOffer,
 }: {
-  onSetLocalDescription: any,
+  // onSetLocalDescription: any,
   // onGetRemoteDescription: any,
   // onGetAnswerDescription: any,
-  onSetClientType: any,
+  // onSetClientType: any,
   clientType: string,
   createOffer: any,
 }) {
@@ -92,19 +92,20 @@ function ConnectContainer({
     rpc.emit('get-remote-server-state', null);
   };
   const handleSendLocalOfferDesc = (item: any) => {
-    dataChannelClient.createOffer((desc: RTCSessionDescriptionInit) => {
-      dataChannelClient.setLocalDescription(desc);
-      onSetLocalDescription(desc);
-      onSetClientType('caller');
-      rpc.emit('websocket-message', {
-        type: 'swap-offer-desc',
-        clientType: 'caller',
-        targetId: item.id,
-        data: {
-          description: JSON.stringify(desc),
-        },
-      });
-    });
+    createOffer(item);
+    // dataChannelClient.createOffer((desc: RTCSessionDescriptionInit) => {
+    //   dataChannelClient.setLocalDescription(desc);
+    //   onSetLocalDescription(desc);
+    //   onSetClientType('caller');
+    //   rpc.emit('websocket-message', {
+    //     type: 'swap-offer-desc',
+    //     clientType: 'caller',
+    //     targetId: item.id,
+    //     data: {
+    //       description: JSON.stringify(desc),
+    //     },
+    //   });
+    // });
   };
   return (
     <div>
