@@ -6,17 +6,20 @@ import { WebRTCDataChannelClient } from '../../webrtc';
 
 function ConnectContainer({
   onSetLocalDescription,
-  onGetRemoteDescription,
-  onGetAnswerDescription,
+  // onGetRemoteDescription,
+  // onGetAnswerDescription,
   onSetClientType,
   clientType: currentClientType,
+  createOffer,
 }: {
   onSetLocalDescription: any,
-  onGetRemoteDescription: any,
-  onGetAnswerDescription: any,
+  // onGetRemoteDescription: any,
+  // onGetAnswerDescription: any,
   onSetClientType: any,
   clientType: string,
+  createOffer: any,
 }) {
+  console.log('createOffer :>> ', createOffer);
   const [clients, setClients] = useState([]);
   const refClientType = useRef(currentClientType);
   useEffect(() => {
@@ -39,35 +42,35 @@ function ConnectContainer({
         console.log('sodalog Array.from(arpInfoSet) :>> ', Array.from(arpInfoSet));
       }
     });
-    rpc.on('on-get-remote-offer-desc', async (message) => {
-      console.log('message :>> ', message);
-      const { desc, clientType, fromId } = message;
-      if (clientType === 'caller') {
-        console.log('被叫端');
-        onSetClientType('callee');
-        onGetRemoteDescription(desc);
-        const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
-          desc,
-        );
-        dataChannelClient.setLocalDescription(answerDescription);
-        onSetLocalDescription(answerDescription);
+    // rpc.on('on-get-remote-offer-desc', async (message) => {
+    //   console.log('message :>> ', message);
+    //   const { desc, clientType, fromId } = message;
+    //   if (clientType === 'caller') {
+    //     console.log('被叫端');
+    //     onSetClientType('callee');
+    //     onGetRemoteDescription(desc);
+    //     const answerDescription = await dataChannelClient.setRemoteDescriptionAndCreateAnswer(
+    //       desc,
+    //     );
+    //     dataChannelClient.setLocalDescription(answerDescription);
+    //     onSetLocalDescription(answerDescription);
 
-        rpc.emit('websocket-message', {
-          type: 'swap-offer-desc',
-          clientType: 'callee',
-          targetId: fromId,
-          data: {
-            description: JSON.stringify(answerDescription),
-          },
-        });
-      }
-      if (clientType === 'callee') {
-        console.log('主叫端');
-        // console.log('from callee desc :>> ', desc);
-        onGetRemoteDescription(desc);
-        dataChannelClient.setRemoteDescription(desc);
-      }
-    });
+    //     rpc.emit('websocket-message', {
+    //       type: 'swap-offer-desc',
+    //       clientType: 'callee',
+    //       targetId: fromId,
+    //       data: {
+    //         description: JSON.stringify(answerDescription),
+    //       },
+    //     });
+    //   }
+    //   if (clientType === 'callee') {
+    //     console.log('主叫端');
+    //     // console.log('from callee desc :>> ', desc);
+    //     onGetRemoteDescription(desc);
+    //     dataChannelClient.setRemoteDescription(desc);
+    //   }
+    // });
 
     // dataChannelClient.createDataChannel();
     dataChannelClient.setIceCandidateListener((ev: RTCPeerConnectionIceEvent) => {
@@ -108,6 +111,7 @@ function ConnectContainer({
       <Button onClick={handleSend}>get local network info</Button>
       <Button onClick={handleGetArp}>get arp info</Button>
       <Button onClick={handleGetServerState}>get remove info</Button>
+      <Button onClick={() => createOffer('fffffffoooooo')}>create offer</Button>
 
       <List
         // header={<div>Header</div>}

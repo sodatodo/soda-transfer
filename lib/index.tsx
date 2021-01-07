@@ -4,11 +4,13 @@ import { Provider } from 'react-redux';
 import App from './app';
 import './index.less';
 import rpc from './utils/rpc';
-import configureStore, { history } from './configureStore';
+import configureStore, { history, runSaga } from './configureStore';
+import rootSaga from './saga/effects';
 
 console.log('rpc :>> ', rpc);
 
 const store = configureStore({}, history);
+runSaga(rootSaga);
 
 ReactDOM.render(
   <React.StrictMode>
